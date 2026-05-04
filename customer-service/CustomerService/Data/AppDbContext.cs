@@ -1,4 +1,4 @@
-using CustomerService.Models;
+using CustomerService.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace CustomerService.Data;
