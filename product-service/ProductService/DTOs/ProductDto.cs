@@ -8,4 +8,5 @@ public class ProductDto
 
     public decimal Price{get;set;}
     public string Category{get;set;} = string.Empty;
+    public int StockQuantity { get; set; }
 }

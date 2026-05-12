@@ -39,12 +39,13 @@ public class ProductServices
           Name = product.Name,
           Category = product.Category,
           Description = product.Description,
+          StockQuantity = product.StockQuantity,
           Price = product.Price
         };
 
 
     }
-    public async Task<List<ProductDto?>> GetAllProduct()
+    public async Task<List<ProductDto>> GetAllProduct()
     {
         var getAll = await _context.Products
             .Select(p=>  new ProductDto
@@ -52,12 +53,33 @@ public class ProductServices
                 Id =p.Id,
                 Name = p.Name,
                 Description = p.Description,
+                StockQuantity = p.StockQuantity,
                 Price = p.Price,
                 Category = p.Category
             })
             .ToListAsync();
 
         return getAll;
+    }
+
+    public async Task<List<ProductDto>>GetProductsByCategory(string? category)
+    {
+        var products = await _context.Products
+        .Where(p=>p.Category == category)
+        .Select(p=> new ProductDto
+        {
+            Id = p.Id,
+            Name = p.Name,
+            Description = p.Description,
+            Price = p.Price,
+            StockQuantity = p.StockQuantity,
+            Category = p.Category
+            
+        })
+        .ToListAsync();
+
+        return products;
+      
     }
 
     public async Task<ProductDto?> UpdateProduct(int id, CreateProductDto dto)
@@ -84,10 +106,11 @@ public class ProductServices
         Name = product.Name,
         Description = product.Description,
         Price = product.Price,
+   //     StockQuantity = product.StockQuantity,
         Category = product.Category
     };
 }
-public async Task<bool> DeleteProduct(int id)
+    public async Task<bool> DeleteProduct(int id)
     {
         var product =await _context.Products.FindAsync(id);
 
@@ -101,5 +124,36 @@ public async Task<bool> DeleteProduct(int id)
 
         return true;
    
+    }
+
+    public async Task<ProductDto?> UpdateStock(int id , UpdateStockDto dto)
+    {
+        var product = await _context.Products.FindAsync(id);
+
+        if(product == null)
+        {
+            return null;
+        }
+
+        int new_stock = dto.Quantity + product.StockQuantity;
+
+        if(new_stock < 0)
+        {
+            return null;
+        }
+        product.StockQuantity = new_stock;
+        await _context.SaveChangesAsync();
+
+        return new ProductDto
+        {
+          Id = product.Id,
+          Name = product.Name,
+          Description = product.Description,
+          Category = product.Category,
+          Price = product.Price,
+          StockQuantity = product.StockQuantity
+
+        };
+
     }
 }

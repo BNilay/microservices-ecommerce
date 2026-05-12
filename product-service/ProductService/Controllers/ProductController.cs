@@ -16,12 +16,19 @@ public class ProductController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAllProduct()
+    public async Task<IActionResult> GetAllProduct( string? category)
     {
+        if (!string.IsNullOrEmpty(category))
+        {
+            var filteredProducts = await _productServices.GetProductsByCategory(category);
+            return Ok(filteredProducts);
+        }
         var products = await _productServices.GetAllProduct();
-
+    
         return Ok(products);
     }
+
+  
 
     [HttpPost]
     public async Task<IActionResult> CreateProduct(CreateProductDto dto)
@@ -60,4 +67,14 @@ public class ProductController : ControllerBase
         return NoContent();
     }
 
+    [HttpPut("{id}/stock")] //endpoint updateproductla aynı olmasın diye stock ekledik
+    public async Task<IActionResult> UpdateStock(int id, UpdateStockDto dto)
+    {
+        var product = await _productServices.UpdateStock(id,dto);
+        if (product== null)
+        {
+            return BadRequest("Ürün bulunamadı veya stok sıfırın altına düşemez.");
+        }
+        return Ok(product);
+    }
 }
