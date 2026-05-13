@@ -16,8 +16,14 @@ public class ProductController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAllProduct( string? category)
+    public async Task<IActionResult> GetAllProduct([FromQuery] string? category, [FromQuery] bool? inStock)
     {
+        if (inStock == true)
+        {
+            var inStockProducts = await _productServices.GetProductsInStock();
+            return Ok(inStockProducts);
+        }
+
         if (!string.IsNullOrEmpty(category))
         {
             var filteredProducts = await _productServices.GetProductsByCategory(category);

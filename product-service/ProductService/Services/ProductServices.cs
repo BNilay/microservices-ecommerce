@@ -82,6 +82,24 @@ public class ProductServices
       
     }
 
+    public async Task<List<ProductDto>> GetProductsInStock()
+    {
+        var products = await _context.Products
+        .Where(p=>p.StockQuantity > 0)
+        .Select(p=> new ProductDto
+        {
+            Id = p.Id,
+            Name = p.Name,
+            Description = p.Description,
+            Price = p.Price,
+            StockQuantity = p.StockQuantity,
+            Category = p.Category
+        
+        }).ToListAsync();
+
+        return products;
+    }
+
     public async Task<ProductDto?> UpdateProduct(int id, CreateProductDto dto)
 {
     if (dto.Price < 0 || dto.StockQuantity < 0)
