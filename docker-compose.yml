@@ -41,6 +41,7 @@ services:
       - POSTGRES_PASSWORD=postgres
     volumes:
       - product_db_data:/var/lib/postgresql/data
+
   order-service:
     build: ./order-service/OrderService
     ports:
@@ -48,6 +49,21 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8080
+      - ConnectionStrings__DefaultConnection=Host=order-db;Port=5432;Database=order_db;Username=postgres;Password=postgres
+    depends_on:
+      - order-db
+
+  order-db:
+    image: postgres:16
+    container_name: order-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: order_db
+    ports:
+      - "5435:5432"
+    volumes:
+      - order_db_data:/var/lib/postgresql/data
 
   payment-service:
     build: ./payment-service/PaymentService
@@ -68,3 +84,4 @@ services:
 volumes:
   customer_db_data:
   product_db_data:
+  order_db_data:
