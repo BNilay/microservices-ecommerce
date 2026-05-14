@@ -8,10 +8,12 @@ namespace ProductService.Services;
 public class ProductServices
 {
     private readonly AppDbContext _context;
+    private readonly HttpClient _httpClient;
 
-    public ProductServices(AppDbContext context)
+    public ProductServices(AppDbContext context , HttpClient httpClient)
     {
         _context = context;
+        _httpClient = httpClient;
     }
 
     public async Task<ProductDto?> CreateProduct(CreateProductDto dto)
@@ -174,4 +176,33 @@ public class ProductServices
         };
 
     }
+
+    public async Task<string?> GetCustomerFromCustomerService(int customerId)
+    {
+        var response = await _httpClient.GetAsync($"http://localhost:5001/api/customers/{customerId}");
+
+        if (!response.IsSuccessStatusCode)
+        {
+            return null;
+        }
+
+        var customerJson = await response.Content.ReadAsStringAsync();
+
+        return customerJson;
+    }
+
+    public async Task<string?> TestCustomerServiceConnection()
+    {
+        var response = await _httpClient.GetAsync("http://customer-service:8080/api/Test");
+
+        if (!response.IsSuccessStatusCode)
+        {
+            return null;
+        }
+
+        var result = await response.Content.ReadAsStringAsync();
+
+        return result;
+    }
+
 }
