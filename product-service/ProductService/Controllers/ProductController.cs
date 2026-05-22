@@ -153,4 +153,18 @@ public class ProductController : ControllerBase
         }
         return Ok(result);
     }
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetProductById(int id)
+    {
+        //ProductServices.GetProductById(id) çağır
+
+        var result = await _productServices.GetProductById(id);
+        
+        if(result== null)
+        {
+            return NotFound("Bu id ile ürün bulunamadı");
+        }
+        return Ok(result);
+        
+    }
 }

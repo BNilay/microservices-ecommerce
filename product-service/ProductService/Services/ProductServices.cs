@@ -204,5 +204,24 @@ public class ProductServices
 
         return result;
     }
+    
+    //order service ürüne erişebilsin diye
+    public async Task<ProductDto?> GetProductById(int id)
+    {
+        var product = await _context.Products 
+        .Where(p=>p.Id == id)
+        .Select(p=> new ProductDto
+        {
+            Id = p.Id,
+            Name = p.Name,
+            Description = p.Description,
+            Price = p.Price,
+            StockQuantity = p.StockQuantity,
+            Category = p.Category
+        })
+           .FirstOrDefaultAsync();
+
+        return product;
+    }
 
 }

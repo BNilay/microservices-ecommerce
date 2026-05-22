@@ -53,6 +53,9 @@ TemporaryDependencyNodeTargetIdentifier=net8.0
 /warnaserror+:NU1605,SYSLIB0011
 
 [sourceFiles]
+Clients/
+ CustomerHttpClient.cs
+ ProductHttpClients.cs
 Controllers/OrdersController.cs
 Data/AppDbContext.cs
 DTOs/

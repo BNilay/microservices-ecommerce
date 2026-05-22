@@ -9,6 +9,9 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8080
+      - ConnectionStrings__DefaultConnection=Host=customer-db;Port=5432;Database=customer_db;Username=postgres;Password=postgres
+    depends_on:
+      - customer-db
 
   customer-db:
     image: postgres:16
@@ -29,6 +32,9 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8080
+      - ConnectionStrings__DefaultConnection=Host=product-db;Port=5432;Database=product_db;Username=postgres;Password=postgres
+    depends_on:
+      - product-db
 
   product-db:
     image: postgres:16
@@ -52,16 +58,18 @@ services:
       - ConnectionStrings__DefaultConnection=Host=order-db;Port=5432;Database=order_db;Username=postgres;Password=postgres
     depends_on:
       - order-db
+      - product-service
+      - customer-service
 
   order-db:
     image: postgres:16
     container_name: order-db
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: order_db
     ports:
       - "5435:5432"
+    environment:
+      - POSTGRES_DB=order_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
     volumes:
       - order_db_data:/var/lib/postgresql/data
 
