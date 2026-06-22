@@ -18,6 +18,7 @@ public class CustomerController : ControllerBase
         _context = context;
     }
 
+    [AllowAnonymous]
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(int id)
     {

@@ -47,20 +47,10 @@ public class OrdersController : ControllerBase
         
     }
 
-    [HttpGet("test-customer/{customerId}")]
+    /*[HttpGet("test-customer/{customerId}")]
     public async Task<IActionResult> TestCustomer(int customerId)
     {
-        /*
-        var exists = await _customerHttpClient.CustomerExists(customerId);
-
-        if (!exists)
-        {
-            return NotFound("Customer bulunamadı veya CustomerService'e ulaşılamadı.");
-        }
-
-        return Ok("CustomerService bağlantısı başarılı. Customer bulundu.");
-        */
-
+    
         var connected = await _customerHttpClient.TestConnection();
 
         if (!connected)
@@ -69,6 +59,19 @@ public class OrdersController : ControllerBase
         }
 
         return Ok("CustomerService bağlantısı başarılı.");
+    }
+    */
+    [HttpGet("test-customer/{customerId}")]
+    public async Task<IActionResult> TestCustomer(int customerId)
+    {
+        var exists = await _customerHttpClient.CustomerExists(customerId);
+
+        if (!exists)
+        {
+            return NotFound("Customer bulunamadı veya CustomerService'e ulaşılamadı.");
+        }
+
+        return Ok("CustomerService bağlantısı başarılı. Customer bulundu.");
     }
 
     [HttpGet("test-product/{productId}")]
@@ -82,5 +85,50 @@ public class OrdersController : ControllerBase
         }
 
         return Ok("ProductService bağlantısı başarılı. Product bulundu.");
+    }
+    [HttpPost]
+    public async Task<IActionResult> CreateOrder([FromBody] CreateOrderDto createOrderDto)
+    {
+        var order = await _orderservices.CreateOrder(createOrderDto);
+
+        if (order == null)
+        {
+            return BadRequest("Sipariş oluşturulamadı. Customer, ürün veya stok bilgilerini kontrol et.");
+        }
+
+        return CreatedAtAction(nameof(GetOrderById), new { id = order.Id }, order);
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteOrder(int id)
+    {
+        var result = await _orderservices.DeleteOrder(id);
+
+        if (!result)
+        {
+            return NotFound("Sipariş bulunamadı."); 
+        }
+
+        return NoContent();
+    }
+
+    [HttpPut("{id}/status")]
+    public async Task<IActionResult> UpdateOrderStatus(int id, [FromBody] UpdateOrderStatusDto dto)
+    {
+        var order = await _orderservices.UpdateOrderStatus(id, dto.Status);
+
+        if (order == null)
+        {
+            return BadRequest("Sipariş durumu güncellenemedi.");
+        }
+
+        return Ok(order);
+    }
+    [HttpGet("customer/{customerId}")]
+    public async Task<IActionResult> GetOrdersByCustomerId(int customerId)
+    {
+        var orders = await _orderservices.GetOrdersByCustomerId(customerId);
+
+        return Ok(orders);
     }
 }

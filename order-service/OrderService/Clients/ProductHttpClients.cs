@@ -1,3 +1,5 @@
+using System.Net.Http.Json;
+using OrderService.DTOs;
 namespace OrderService.Clients;
 
 public class ProductHttpClient
@@ -19,5 +21,29 @@ public class ProductHttpClient
         return response.IsSuccessStatusCode;
     }
 
-  
+    public async Task<ProductInfoDto?> GetProductById(int productId)
+    {
+        var product = await _httpClient.GetFromJsonAsync<ProductInfoDto>($"/api/Product/{productId}");
+
+        return product;
+    }
+    public async Task<bool> DecreaseStock(int productId, int quantity)
+    {
+        var response = await _httpClient.PutAsJsonAsync($"/api/Product/{productId}/stock", new
+        {
+            Quantity = -quantity
+        });
+
+        return response.IsSuccessStatusCode;
+    }
+    public async Task<bool> IncreaseStock(int productId, int quantity)
+    {
+        var response = await _httpClient.PutAsJsonAsync($"/api/Product/{productId}/stock", new
+        {
+            Quantity = quantity
+        });
+
+        return response.IsSuccessStatusCode;
+    }
+    
 }

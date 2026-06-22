@@ -11,7 +11,8 @@ public class CustomerHttpClient
 
     public async Task<bool> CustomerExists(int customerId)
     {
-        var response = await _httpClient.GetAsync($"/api/customers/{customerId}");
+        var response = await _httpClient.GetAsync($"/api/Customers/{customerId}");
+        //c->C
 
         return response.IsSuccessStatusCode; //HTTP status code 200-299 arasındaysa true dön.
 
