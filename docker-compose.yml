@@ -80,6 +80,21 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8080
+      - ConnectionStrings__DefaultConnection=Host=payment-db;Port=5432;Database=payment_db;Username=postgres;Password=postgres
+    depends_on:
+      - payment-db
+
+  payment-db:
+    image: postgres:16
+    container_name: payment-db
+    ports:
+      - "5436:5432"
+    environment:
+      - POSTGRES_DB=payment_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - payment_db_data:/var/lib/postgresql/data
 
   api-gateway:
     build: ./api-gateway/ApiGateway
@@ -93,3 +108,4 @@ volumes:
   customer_db_data:
   product_db_data:
   order_db_data:
+  payment_db_data:
