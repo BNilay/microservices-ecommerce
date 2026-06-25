@@ -27,4 +27,30 @@ public class PaymentsController : ControllerBase
 
         return Ok(payment);
     }
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetPaymentById(int id)
+    {
+        var payment = await _paymentServices.GetPaymentById(id);
+
+        if (payment == null)
+        {
+            return NotFound("Ödeme bulunamadı.");
+        }
+
+        return Ok(payment);
+    }
+
+    [HttpPost("{id}/refund")]
+    public async Task<IActionResult> RefundPayment(int id)
+    {
+        var payment = await _paymentServices.RefundPayment(id);
+
+        if (payment == null)
+        {
+            return BadRequest("Ödeme iade edilemedi. Ödeme bulunamadı veya Completed durumunda değil.");
+        }
+
+        return Ok(payment);
+    }
+    
 }
