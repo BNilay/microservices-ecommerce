@@ -25,6 +25,18 @@
       "UpstreamHttpMethod": [ "GET", "PUT", "DELETE" ]
     },
     {
+      "DownstreamPathTemplate": "/api/auth/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "customer-service",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/api/auth/{everything}",
+      "UpstreamHttpMethod": [ "POST" ]
+    },
+    {
       "DownstreamPathTemplate": "/api/Orders",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -34,7 +46,11 @@
         }
       ],
       "UpstreamPathTemplate": "/api/orders",
-      "UpstreamHttpMethod": [ "GET", "POST" ]
+      "UpstreamHttpMethod": [ "GET", "POST" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
     },
     {
       "DownstreamPathTemplate": "/api/Orders/{everything}",
@@ -46,7 +62,11 @@
         }
       ],
       "UpstreamPathTemplate": "/api/orders/{everything}",
-      "UpstreamHttpMethod": [ "GET", "PUT", "DELETE" ]
+      "UpstreamHttpMethod": [ "GET", "PUT", "DELETE" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
     },
     {
       "DownstreamPathTemplate": "/api/Payments",
@@ -73,16 +93,16 @@
       "UpstreamHttpMethod": [ "GET", "POST" ]
     },
     {
-    "DownstreamPathTemplate": "/api/customers/{everything}",
-    "DownstreamScheme": "http",
-    "DownstreamHostAndPorts": [
+      "DownstreamPathTemplate": "/api/customers/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
         {
-        "Host": "customer-service",
-        "Port": 8080
+          "Host": "customer-service",
+          "Port": 8080
         }
-    ],
-    "UpstreamPathTemplate": "/api/customers/{everything}",
-    "UpstreamHttpMethod": [ "GET", "PUT", "DELETE", "POST" ]
+      ],
+      "UpstreamPathTemplate": "/api/customers/{everything}",
+      "UpstreamHttpMethod": [ "GET", "PUT", "DELETE", "POST" ]
     }
   ],
   "GlobalConfiguration": {
