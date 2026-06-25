@@ -11,14 +11,17 @@ public class OrderServices
     private readonly AppDbContext _context;
     private readonly CustomerHttpClient _customerHttpClient;
     private readonly ProductHttpClient _productHttpClient;
+    private readonly PaymentHttpClient _paymentHttpClient;
    public OrderServices(
         AppDbContext context,
         CustomerHttpClient customerHttpClient,
-        ProductHttpClient productHttpClient)
+        ProductHttpClient productHttpClient,
+        PaymentHttpClient paymentHttpClient)
     {
         _context = context;
         _customerHttpClient = customerHttpClient;
         _productHttpClient = productHttpClient;
+        _paymentHttpClient = paymentHttpClient;
 }
     public async Task<List<OrderDto>> GetAllOrders()
     {
@@ -131,6 +134,27 @@ public class OrderServices
         await _productHttpClient.DecreaseStock(item.ProductId, item.Quantity);
     }
 
+    var payment = await _paymentHttpClient.CreatePayment(new CreatePaymentDto
+    {
+        OrderId = order.Id,
+        Amount = order.TotalAmount,
+        Method = createOrderDto.PaymentMethod
+    });
+    if (payment == null || payment.Status != 1)
+    {
+        foreach (var item in order.Items)
+        {
+            await _productHttpClient.IncreaseStock(item.ProductId, item.Quantity);
+        }
+
+        order.Status = OrderStatus.Cancelled;
+    }
+    else
+    {
+        order.Status = OrderStatus.Confirmed;
+    }
+
+    await _context.SaveChangesAsync();
     return new OrderDto
     {
         Id = order.Id,

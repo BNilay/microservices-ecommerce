@@ -25,6 +25,10 @@ builder.Services.AddHttpClient<ProductHttpClient>(client =>
     client.BaseAddress = new Uri("http://product-service:8080");
 });
 
+builder.Services.AddHttpClient<PaymentHttpClient>(client =>
+{
+   client.BaseAddress = new Uri("http://payment-service:8080"); 
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
