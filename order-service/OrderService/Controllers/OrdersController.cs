@@ -32,7 +32,13 @@ public class OrdersController : ControllerBase
         
         return Ok(orders);
     }
+    [HttpGet("customer/{customerId}")]
+    public async Task<IActionResult> GetOrdersByCustomerId(int customerId)
+    {
+        var orders = await _orderservices.GetOrdersByCustomerId(customerId);
 
+        return Ok(orders);
+    }
     [HttpGet("{id}")]
     public async Task<IActionResult> GetOrderById(int id)
     {
@@ -124,11 +130,5 @@ public class OrdersController : ControllerBase
 
         return Ok(order);
     }
-    [HttpGet("customer/{customerId}")]
-    public async Task<IActionResult> GetOrdersByCustomerId(int customerId)
-    {
-        var orders = await _orderservices.GetOrdersByCustomerId(customerId);
 
-        return Ok(orders);
-    }
 }

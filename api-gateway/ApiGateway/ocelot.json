@@ -53,6 +53,22 @@
       }
     },
     {
+      "DownstreamPathTemplate": "/api/Orders/customer/{customerId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "order-service",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/api/orders/customer/{customerId}",
+      "UpstreamHttpMethod": [ "GET" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
       "DownstreamPathTemplate": "/api/Orders/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
