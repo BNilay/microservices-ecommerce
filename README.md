@@ -319,7 +319,110 @@ Protected requests use the token automatically:
 ```text
 Bearer {{token}}
 ```
+## Frontend Application
 
+This project includes a simple React frontend application for demonstrating the main e-commerce flow.
+
+The frontend communicates with the backend through the API Gateway.
+
+Frontend URL:
+
+```text
+http://localhost:5173
+```
+
+API Gateway URL:
+
+```text
+http://localhost:5000
+```
+
+### Frontend Features
+
+The React frontend supports the following features:
+
+- User login
+- JWT token storage in the background
+- Product listing
+- Product selection
+- Order creation
+- Order result display
+- Automatic stock refresh after order creation
+
+The JWT token is not displayed to the user. After a successful login, the token is stored in `localStorage` and automatically added to protected requests.
+
+When creating an order, the frontend sends the token in the request header:
+
+```text
+Authorization: Bearer <token>
+```
+
+### Frontend Project Structure
+
+The frontend project is located in the `frontend` folder.
+
+```text
+frontend
+├── src
+│   ├── App.jsx
+│   ├── App.css
+│   ├── index.css
+│   └── main.jsx
+├── package.json
+└── vite.config.js
+```
+
+### Running the Frontend
+
+First, make sure all backend services are running:
+
+```bash
+docker compose up -d --build
+```
+
+Then open a new terminal and go to the frontend folder:
+
+```bash
+cd frontend
+```
+
+Install dependencies:
+
+```bash
+npm.cmd install
+```
+
+Run the React development server:
+
+```bash
+npm.cmd run dev
+```
+
+The frontend will be available at:
+
+```text
+http://localhost:5173
+```
+
+### Frontend Demo Flow
+
+The frontend demo flow works as follows:
+
+```text
+1. User opens the React frontend.
+2. User logs in with email and password.
+3. JWT token is saved in localStorage.
+4. Products are loaded from ProductService through API Gateway.
+5. User selects a product and quantity.
+6. User creates an order.
+7. The frontend sends the JWT token automatically.
+8. OrderService creates the order.
+9. PaymentService returns a mock payment result.
+10. If payment succeeds, order status becomes Confirmed.
+11. If payment fails, order status becomes Cancelled and stock is restored.
+```
+
+This frontend demonstrates that the backend services can be used through a real client application, not only through Swagger or Postman.
 ## Example Test Flow
 
 ### 1. Register a customer
