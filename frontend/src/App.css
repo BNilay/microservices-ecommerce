@@ -1,0 +1,153 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #f4f6f8;
+  color: #222;
+}
+
+.page {
+  min-height: 100vh;
+  padding: 40px 20px;
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+h1 {
+  margin-bottom: 8px;
+  color: #111827;
+}
+
+.subtitle {
+  margin-bottom: 30px;
+  color: #4b5563;
+}
+
+.card {
+  background: #ffffff;
+  color: #222;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+}
+
+.card h2 {
+  color: #111827;
+}
+
+.card p {
+  color: #374151;
+}
+
+.form-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+input,
+select {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  min-width: 180px;
+  background-color: #ffffff;
+  color: #111827;
+}
+
+input::placeholder {
+  color: #6b7280;
+}
+
+select option {
+  background-color: #ffffff;
+  color: #111827;
+}
+
+button {
+  padding: 12px 18px;
+  border: none;
+  border-radius: 8px;
+  background: #2563eb;
+  color: #ffffff;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+button:hover {
+  background: #1d4ed8;
+}
+
+button.secondary {
+  background: #64748b;
+  color: #ffffff;
+}
+
+button.secondary:hover {
+  background: #475569;
+}
+
+.info {
+  color: #555;
+}
+
+.success {
+  color: #15803d;
+  font-weight: bold;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.products {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.product-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 16px;
+  background: #fafafa;
+  color: #222;
+}
+
+.product-card h3 {
+  margin-top: 0;
+  color: #111827;
+}
+
+.product-card p {
+  color: #374151;
+}
+
+.message {
+  padding: 16px;
+  border-radius: 10px;
+  background: #e0f2fe;
+  color: #075985;
+  margin-bottom: 20px;
+}
+
+.result {
+  background: #f8fafc;
+  color: #222;
+  border-radius: 10px;
+  padding: 16px;
+}
+
+.result p {
+  color: #374151;
+}
